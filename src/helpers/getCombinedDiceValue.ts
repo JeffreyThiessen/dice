@@ -94,7 +94,7 @@ export function getCombinedDiceValue(
   let res: number = -1
 
   if (!(currentValues.length === 0)){
-    output += "skill:";
+    output += "Skill:";
     if (flipped){
       res = Math.min(...currentValues);
     } else {
@@ -107,7 +107,7 @@ export function getCombinedDiceValue(
     output += " ";
   }
   if (!(currentValuesToHit.length === 0)){
-    output += "hit:";
+    output += "Hit:";
     if (flipped){
       res = Math.min(...currentValuesToHit);
     } else {
@@ -120,7 +120,7 @@ export function getCombinedDiceValue(
     output += " "
   }
   if (!(currentValuesDmg.length === 0)){
-    output += "dmg:";
+    output += "Dmg:";
     if (flipped){
       res = Math.min(...currentValuesDmg);
     } else {
