@@ -1,6 +1,8 @@
 import { Dice, isDice } from "../types/Dice";
 import { isDie } from "../types/Die";
 
+import { useDiceControlsStore } from "../controls/store";
+
 /**
  * Check if the dice is a classical D100 roll with a D100
  * for the 10s unit and a D10 for the single digit.
@@ -53,6 +55,7 @@ export function getCombinedDiceValue(
       const value = values[dieOrDice.id];
       if (value !== undefined) {
         if (value === 0 && dieOrDice.type === "D10") {
+          // dieOrDice.style
           currentValues.push(10);
         } else {
           currentValues.push(value);
@@ -79,6 +82,11 @@ export function getCombinedDiceValue(
   } else if (dice.combination === "LOWEST") {
     return Math.min(...currentValues) + bonus;
   } else {
-    return currentValues.reduce((a, b) => a + b) + bonus;
+    const flipped = useDiceControlsStore((state) => state.diceFlipped);
+    if (flipped){
+      return Math.min(...currentValues);
+    } else {
+      return Math.max(...currentValues);
+    }
   }
 }
