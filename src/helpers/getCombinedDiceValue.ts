@@ -3,6 +3,9 @@ import { isDie } from "../types/Die";
 
 import { useDiceControlsStore } from "../controls/store";
 
+const TO_HIT_STYLE = "GLASS"
+const DMG_STYLE = "SUNSET"
+
 /**
  * Check if the dice is a classical D100 roll with a D100
  * for the 10s unit and a D10 for the single digit.
@@ -50,15 +53,31 @@ export function getCombinedDiceValue(
   }
 
   let currentValues: number[] = [];
+  let currentValuesToHit: number[] = [];
+  let currentValuesDmg: number[] = [];
   for (const dieOrDice of dice.dice) {
     if (isDie(dieOrDice)) {
       const value = values[dieOrDice.id];
       if (value !== undefined) {
         if (value === 0 && dieOrDice.type === "D10") {
           // dieOrDice.style
-          currentValues.push(10);
+          if (dieOrDice.style === TO_HIT_STYLE){
+            currentValuesToHit.push(10)
+          } else if (dieOrDice.style === DMG_STYLE){
+            currentValuesDmg.push(10)
+          } else {
+            currentValues.push(10)
+          }
+          // currentValues.push(10);
         } else {
-          currentValues.push(value);
+          if (dieOrDice.style === TO_HIT_STYLE){
+            currentValuesToHit.push(value)
+          } else if (dieOrDice.style === DMG_STYLE){
+            currentValuesDmg.push(value)
+          } else {
+            currentValues.push(value)
+          }
+          // currentValues.push(value);
         }
       }
     } else if (isDice(dieOrDice)) {
@@ -69,24 +88,57 @@ export function getCombinedDiceValue(
     }
   }
 
-  const bonus = dice.bonus || 0;
+  const flipped = useDiceControlsStore((state) => state.diceFlipped);
+  // let output: (string | number)[] = []
+  let output: string = "";
+  let res: number = -1
 
-  if (currentValues.length === 0 || dice.combination === "NONE") {
-    if (dice.bonus === undefined) {
-      return null;
-    } else {
-      return dice.bonus;
-    }
-  } else if (dice.combination === "HIGHEST") {
-    return Math.max(...currentValues) + bonus;
-  } else if (dice.combination === "LOWEST") {
-    return Math.min(...currentValues) + bonus;
-  } else {
-    const flipped = useDiceControlsStore((state) => state.diceFlipped);
+  if (!(currentValues.length === 0)){
+    output += "skill:";
     if (flipped){
-      return Math.min(...currentValues);
+      res = Math.min(...currentValues);
     } else {
-      return Math.max(...currentValues);
+      res = Math.max(...currentValues);
+    }
+    output += res
+    if(res === 10){
+      output += "!!!"
+    }
+    output += " ";
+  }
+  if (!(currentValuesToHit.length === 0)){
+    output += "hit:";
+    if (flipped){
+      res = Math.min(...currentValuesToHit);
+    } else {
+      res = Math.max(...currentValuesToHit);
+    }
+    output += res
+    if(res === 10){
+      output += "!!!"
+    }
+    output += " "
+  }
+  if (!(currentValuesDmg.length === 0)){
+    output += "dmg:";
+    if (flipped){
+      res = Math.min(...currentValuesDmg);
+    } else {
+      res = Math.max(...currentValuesDmg);
+    }
+    output += res
+    if(res === 10){
+      output += "!!!"
     }
   }
+
+  return output;
+
+  // if (flipped){
+  //   // return Math.min(...currentValues);
+  //   return ["hit:",Math.min(...currentValuesToHit)," dmg:",Math.min(...currentValuesDmg)]
+  // } else {
+  //   // return Math.max(...currentValues);
+  //   return ["hit:",Math.max(...currentValuesToHit)," dmg:",Math.max(...currentValuesDmg)]
+  // }
 }

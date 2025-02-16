@@ -26,6 +26,7 @@ export function DiceResults({
 }) {
   const finalValue = useMemo(() => {
     return getCombinedDiceValue(diceRoll, rollValues);
+    // return "asdf"+['one','two']+getCombinedDiceValue(diceRoll, rollValues);
   }, [diceRoll, rollValues]);
 
   return (

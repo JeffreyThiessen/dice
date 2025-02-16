@@ -43,12 +43,13 @@ function createStandardSet(style: DiceStyle): DiceSet {
 }
 
 const standardSets = [
+  createStandardSet("IRON"),
   // createStandardSet("GALAXY"),
   // createStandardSet("GEMSTONE"),
-  // createStandardSet("GLASS"),
-  createStandardSet("IRON"),
+  createStandardSet("GLASS"),
+  // createStandardSet("IRON"),
   // createStandardSet("NEBULA"),
-  createStandardSet("SUNRISE"),
+  // createStandardSet("SUNRISE"),
   createStandardSet("SUNSET"),
   // createStandardSet("WALNUT"),
 ];

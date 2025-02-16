@@ -1,8 +1,6 @@
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 
-import HiddenOnIcon from "@mui/icons-material/VisibilityOffRounded";
-import HiddenOffIcon from "@mui/icons-material/VisibilityRounded";
 import ArrowUpwardRoundedIcon from '@mui/icons-material/ArrowUpwardRounded';
 import ArrowDownwardRoundedIcon from '@mui/icons-material/ArrowDownwardRounded';
 
