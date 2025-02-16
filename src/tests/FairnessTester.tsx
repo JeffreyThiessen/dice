@@ -128,7 +128,7 @@ export function FairnessTester() {
             state.rollValues as Record<string, number>
           );
           if (value) {
-            setRolledValues((prev) => [...prev, value]);
+            // setRolledValues((prev) => [...prev, value]);
           }
         }
       });

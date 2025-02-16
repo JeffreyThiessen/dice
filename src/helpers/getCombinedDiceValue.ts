@@ -14,7 +14,7 @@ const DMG_STYLE = "SUNSET"
 function checkD100Combination(
   dice: Dice,
   values: Record<string, number>
-): number | null {
+): number | string | null {
   const bonus = dice.bonus || 0;
   if (
     dice.dice.length === 2 &&
@@ -46,7 +46,7 @@ function checkD100Combination(
 export function getCombinedDiceValue(
   dice: Dice,
   values: Record<string, number>
-): number | null {
+): number | string | null {
   const d100Value = checkD100Combination(dice, values);
   if (d100Value !== null) {
     return d100Value;
@@ -83,7 +83,7 @@ export function getCombinedDiceValue(
     } else if (isDice(dieOrDice)) {
       const value = getCombinedDiceValue(dieOrDice, values);
       if (value !== null) {
-        currentValues.push(value);
+        // currentValues.push(value);
       }
     }
   }
