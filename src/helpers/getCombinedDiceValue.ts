@@ -141,15 +141,17 @@ export function getCombinedDiceValue(
         firstRoll = false
         const newId = generateDiceId()
         const newDie: Die = {id: newId, style: DMG_STYLE, type: "D10"}
-        const cddice = useDiceRollStore((state) => state.roll?.dice)
-        if(cddice){
-          const ddice: (Die | Dice)[] = cddice.concat(newDie)
-          const droll: DiceRoll = {dice: ddice}
-          useDiceRollStore((state) => state.roll = droll)
+        // const cddice = useDiceRollStore((state) => state.roll?.dice)
+        // if(cddice){
+        //   const ddice: (Die | Dice)[] = cddice.concat(newDie)
+        //   const droll: DiceRoll = {dice: ddice}
+          // useDiceRollStore((state) => state.roll = droll)
+          const addDie =  useDiceRollStore((state) => state.addDie);
           const reroll = useDiceRollStore((state) => state.reroll);
+          addDie(newDie)
           console.log("a")
           reroll([newId])
-        }
+        // }
       }
       // END BONUS DICE ROLL LOGIC
     }
