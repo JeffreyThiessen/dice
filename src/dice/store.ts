@@ -105,15 +105,22 @@ function rerollDraft(
   for (let dieOrDice of diceRoll.dice) {
     if (isDie(dieOrDice)) {
       if (!ids || ids.includes(dieOrDice.id)) {
-        console.log("rerollin draft :" + dieOrDice.id);
+        console.log("rerollin draft a:" + dieOrDice.id);
         delete rollValues[dieOrDice.id];
+        console.log("rerollin draft b:" + dieOrDice.id);
         delete rollTransforms[dieOrDice.id];
+        console.log("rerollin draft c:" + dieOrDice.id);
         delete rollThrows[dieOrDice.id];
+        console.log("rerollin draft d:" + dieOrDice.id);
         const manualThrow = manualThrows?.[dieOrDice.id];
+        console.log("rerollin draft e:" + dieOrDice.id);
         const id = generateDiceId();
         dieOrDice.id = id;
+        console.log("rerollin draft f:" + dieOrDice.id);
         rollValues[id] = null;
+        console.log("rerollin draft g:" + dieOrDice.id);
         rollTransforms[id] = null;
+        console.log("rerollin draft h:" + dieOrDice.id);
         if (manualThrow) {
           rollThrows[id] = manualThrow;
         } else {
