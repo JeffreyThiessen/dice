@@ -127,7 +127,7 @@ function rerollDraft(
         rollValues[id] = null;
         // console.log("rerollin draft g:" + dieOrDice.id);
         rollTransforms[id] = null;
-        console.log("rerollin draft h:" + dieOrDice.id);
+        // console.log("rerollin draft h:" + dieOrDice.id);
         if (manualThrow) {
           rollThrows[id] = manualThrow;
         } else {

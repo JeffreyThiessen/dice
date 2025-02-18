@@ -149,7 +149,7 @@ export function getCombinedDiceValue(
           const addDie =  useDiceRollStore((state) => state.addDie);
           const reroll = useDiceRollStore((state) => state.reroll);
           addDie(newDie)
-          console.log("a")
+          // console.log("a")
           reroll([newId])
         // }
       }
