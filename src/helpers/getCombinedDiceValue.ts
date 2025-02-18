@@ -146,7 +146,10 @@ export function getCombinedDiceValue(
           const ddice: (Die | Dice)[] = cddice.concat(newDie)
           const droll: DiceRoll = {dice: ddice}
           useDiceRollStore((state) => state.roll = droll)
-          useDiceRollStore((state) => state.reroll([newId],undefined))
+          // useDiceRollStore((state) => state.reroll([newId]))
+          const reroll = useDiceRollStore((state) => state.reroll);
+          console.log("a")
+          reroll([newId])
         }
       }
       // END BONUS DICE ROLL LOGIC
