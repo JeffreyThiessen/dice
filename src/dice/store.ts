@@ -23,6 +23,8 @@ interface DiceRollState {
    * A value of `null` means the die hasn't finished rolling yet.
    */
   rollTransforms: Record<string, DiceTransform | null>;
+
+  firstThrow: boolean;
   /**
    * A mapping from the die ID to its initial roll throw state.
    */
@@ -40,8 +42,10 @@ export const useDiceRollStore = create<DiceRollState>()(
     rollValues: {},
     rollTransforms: {},
     rollThrows: {},
+    firstThrow: true,
     startRoll: (roll, speedMultiplier?: number) =>
       set((state) => {
+        state.firstThrow = true;
         state.roll = roll;
         state.rollValues = {};
         state.rollTransforms = {};
@@ -60,9 +64,14 @@ export const useDiceRollStore = create<DiceRollState>()(
         state.rollValues = {};
         state.rollTransforms = {};
         state.rollThrows = {};
+        state.firstThrow = true;
       }),
     reroll: (ids, manualThrows) => {
+      console.log("reroll ids :" + ids);
       set((state) => {
+        if(ids === undefined){
+          state.firstThrow = true;
+        }
         if (state.roll) {
           rerollDraft(
             state.roll,
@@ -96,6 +105,7 @@ function rerollDraft(
   for (let dieOrDice of diceRoll.dice) {
     if (isDie(dieOrDice)) {
       if (!ids || ids.includes(dieOrDice.id)) {
+        console.log("rerollin draft :" + dieOrDice.id);
         delete rollValues[dieOrDice.id];
         delete rollTransforms[dieOrDice.id];
         delete rollThrows[dieOrDice.id];

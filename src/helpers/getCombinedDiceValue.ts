@@ -1,7 +1,11 @@
 import { Dice, isDice } from "../types/Dice";
+import { Die } from "../types/Die";
 import { isDie } from "../types/Die";
 
 import { useDiceControlsStore } from "../controls/store";
+import { useDiceRollStore } from "../dice/store";
+import { generateDiceId } from "./generateDiceId";
+import { DiceRoll } from "../types/DiceRoll";
 
 const TO_HIT_STYLE = "GLASS"
 const DMG_STYLE = "SUNSET"
@@ -55,11 +59,18 @@ export function getCombinedDiceValue(
     return d100Value;
   }
 
+  let idToReroll: string = "";
+  let lowestDamageValue: number = 100;
+
   let currentValues: number[] = [];
   let currentValuesToHit: number[] = [];
   let currentValuesDmg: number[] = [];
+
+  console.log()
+
   for (const dieOrDice of dice.dice) {
     if (isDie(dieOrDice)) {
+      console.log("dieId:" + dieOrDice.id.toString());
       const value = values[dieOrDice.id];
       if (value !== undefined) {
         if (value === 0 && dieOrDice.type === "D10") {
@@ -77,6 +88,11 @@ export function getCombinedDiceValue(
             currentValuesToHit.push(value)
           } else if (dieOrDice.style === DMG_STYLE){
             currentValuesDmg.push(value)
+            if(value < lowestDamageValue){
+              // console.log("dieId:" + dieOrDice.id.toString());
+              lowestDamageValue = value;
+              idToReroll = dieOrDice.id;
+            }
           } else {
             currentValues.push(value)
           }
@@ -117,7 +133,22 @@ export function getCombinedDiceValue(
     }
     output += res
     if(res === 10){
-      output += "!\nRe-Roll a Dmg Die"
+      output += "!"
+      // START BONUS DIE ROLL LOGIC
+      const firstRoll = useDiceRollStore((state) => state.firstThrow)
+      if (firstRoll){
+        useDiceRollStore((state) => state.firstThrow = false)
+        const newId = generateDiceId()
+        const newDie: Die = {id: newId, style: DMG_STYLE, type: "D10"}
+        const cddice = useDiceRollStore((state) => state.roll?.dice)
+        if(cddice){
+          const ddice: (Die | Dice)[] = cddice.concat(newDie)
+          const droll: DiceRoll = {dice: ddice}
+          useDiceRollStore((state) => state.roll = droll)
+        }
+        useDiceRollStore((state) => state.reroll([newId],undefined))
+      }
+      // END BONUS DICE ROLL LOGIC
     }
     output += "\n"
   }
@@ -133,12 +164,12 @@ export function getCombinedDiceValue(
       output += "!";
       var occ = countOccurrences(currentValuesDmg, 10);
       if(occ > 0){
-        output += "\n+ ";
+        output += "\n+";
         output += occ.toString();
         if(occ === 1){
-          output += " Wound!";
+          output += " Extra Wound!";
         } else{
-          output += " Wounds!";
+          output += " Extra Wounds!";
         }
       }
     }
