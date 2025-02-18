@@ -37,6 +37,9 @@ function checkD100Combination(
   return null;
 }
 
+const countOccurrences = (arr: any[], val: any) =>
+  arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+
 /**
  * Recursively get the final result for a roll of dice
  * @param dice
@@ -89,25 +92,24 @@ export function getCombinedDiceValue(
   }
 
   const flipped = useDiceControlsStore((state) => state.diceFlipped);
-  // let output: (string | number)[] = []
   let output: string = "";
   let res: number = -1
 
   if (!(currentValues.length === 0)){
-    output += "Skill:";
+    output += "Skill: ";
     if (flipped){
       res = Math.min(...currentValues);
     } else {
       res = Math.max(...currentValues);
     }
     output += res
-    if(res === 10){
-      output += "!!!"
+    if(res === 10 || res == 1){
+      output += "!"
     }
-    output += " ";
+    output += "\n";
   }
   if (!(currentValuesToHit.length === 0)){
-    output += "Hit:";
+    output += "Attack: ";
     if (flipped){
       res = Math.min(...currentValuesToHit);
     } else {
@@ -115,30 +117,32 @@ export function getCombinedDiceValue(
     }
     output += res
     if(res === 10){
-      output += "!!!"
+      output += "!\nRe-Roll a Dmg Die"
     }
-    output += " "
+    output += "\n"
   }
   if (!(currentValuesDmg.length === 0)){
-    output += "Dmg:";
+    output += "Damage: ";
     if (flipped){
       res = Math.min(...currentValuesDmg);
     } else {
       res = Math.max(...currentValuesDmg);
     }
-    output += res
+    output += res;
     if(res === 10){
-      output += "!!!"
+      output += "!";
+      var occ = countOccurrences(currentValuesDmg, 10);
+      if(occ > 0){
+        output += "\n+ ";
+        output += occ.toString();
+        if(occ === 1){
+          output += " Wound!";
+        } else{
+          output += " Wounds!";
+        }
+      }
     }
   }
 
   return output;
-
-  // if (flipped){
-  //   // return Math.min(...currentValues);
-  //   return ["hit:",Math.min(...currentValuesToHit)," dmg:",Math.min(...currentValuesDmg)]
-  // } else {
-  //   // return Math.max(...currentValues);
-  //   return ["hit:",Math.max(...currentValuesToHit)," dmg:",Math.max(...currentValuesDmg)]
-  // }
 }
