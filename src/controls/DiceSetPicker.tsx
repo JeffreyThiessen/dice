@@ -28,7 +28,7 @@ export function DiceSetPicker() {
 
   return (
     <>
-      <IconButton
+      {/* <IconButton
         aria-label="change dice set"
         id="dice-set-button"
         aria-controls={open ? "dice-set-menu" : undefined}
@@ -41,7 +41,7 @@ export function DiceSetPicker() {
         }}
       >
         <PreviewImage src={diceSet.previewImage} />
-      </IconButton>
+      </IconButton> */}
       <Menu
         id="dice-set-menu"
         anchorEl={anchorEl}
