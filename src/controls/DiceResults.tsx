@@ -127,11 +127,13 @@ function DiceResultsExpanded({
               =
             </Typography>
             <Typography lineHeight="28px" color="white">
-              {getCombinedDiceValue(
-                { dice: die, combination: diceRoll.combination },
-                rollValues,
-                diceRoll.flipped
-              )}
+              {
+                getCombinedDiceValue(
+                  { dice: die, combination: diceRoll.combination },
+                  rollValues,
+                  diceRoll.flipped
+                )
+              }
             </Typography>
           </>
         )}

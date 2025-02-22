@@ -73,7 +73,6 @@ export function getCombinedDiceValue(
       const value = values[dieOrDice.id];
       if (value !== undefined) {
         if (value === 0 && dieOrDice.type === "D10") {
-          // dieOrDice.style
           if (dieOrDice.style === TO_HIT_STYLE){
             currentValuesToHit.push(10)
           } else if (dieOrDice.style === DMG_STYLE){
@@ -102,74 +101,74 @@ export function getCombinedDiceValue(
   let output: string = "";
   let res: number = -1
 
-  // if (!(currentValues.length === 0)){
-  //   output += "Skill: ";
-  //   if (flipped){
-  //     res = Math.min(...currentValues);
-  //   } else {
-  //     res = Math.max(...currentValues);
-  //   }
-  //   output += res
-  //   if(res === 10 || res == 1){
-  //     output += "!"
-  //   }
-  //   output += "\n";
-  // }
-  // if (!(currentValuesToHit.length === 0)){
-  //   output += "Attack: ";
-  //   if (flipped){
-  //     res = Math.min(...currentValuesToHit);
-  //   } else {
-  //     res = Math.max(...currentValuesToHit);
-  //   }
-  //   output += res
-  //   if(res === 10){
-  //     output += "!"
-  //     // START BONUS DIE ROLL LOGIC
-  //     // let firstRoll = useDiceRollStore((state) => state.firstThrow)
-  //     // if (firstRoll){
-  //     //   useDiceRollStore((state) => state.firstThrow = false)
-  //     //   firstRoll = false
-  //     //   const newId = generateDiceId()
-  //     //   const newDie: Die = {id: newId, style: DMG_STYLE, type: "D10"}
-  //     //   // const cddice = useDiceRollStore((state) => state.roll?.dice)
-  //     //   // if(cddice){
-  //     //   //   const ddice: (Die | Dice)[] = cddice.concat(newDie)
-  //     //   //   const droll: DiceRoll = {dice: ddice}
-  //     //     // useDiceRollStore((state) => state.roll = droll)
-  //     //     const addDie =  useDiceRollStore((state) => state.addDie);
-  //     //     const reroll = useDiceRollStore((state) => state.reroll);
-  //     //     addDie(newDie)
-  //     //     // console.log("a")
-  //     //     reroll([newId])
-  //     //   // }
-  //     // }
-  //     // END BONUS DICE ROLL LOGIC
-  //   }
-  //   output += "\n"
-  // }
-  // if (!(currentValuesDmg.length === 0)){
-  //   output += "Damage: ";
-  //   if (flipped){
-  //     res = Math.min(...currentValuesDmg);
-  //   } else {
-  //     res = Math.max(...currentValuesDmg);
-  //   }
-  //   output += res;
-  //   if(res === 10){
-  //     output += "!";
-  //     var occ = countOccurrences(currentValuesDmg, 10);
-  //     if(occ > 0){
-  //       output += "\n+";
-  //       output += occ.toString();
-  //       if(occ === 1){
-  //         output += " Extra Wound!";
-  //       } else{
-  //         output += " Extra Wounds!";
-  //       }
-  //     }
-  //   }
-  // }
+  if (!(currentValues.length === 0)){
+    output += "Skill: ";
+    if (flipped){
+      res = Math.min(...currentValues);
+    } else {
+      res = Math.max(...currentValues);
+    }
+    output += res
+    if(res === 10 || res == 1){
+      output += "!"
+    }
+    output += "\n";
+  }
+  if (!(currentValuesToHit.length === 0)){
+    output += "Attack: ";
+    if (flipped){
+      res = Math.min(...currentValuesToHit);
+    } else {
+      res = Math.max(...currentValuesToHit);
+    }
+    output += res
+    if(res === 10){
+      output += "!"
+      // START BONUS DIE ROLL LOGIC
+      // let firstRoll = useDiceRollStore((state) => state.firstThrow)
+      // if (firstRoll){
+      //   useDiceRollStore((state) => state.firstThrow = false)
+      //   firstRoll = false
+      //   const newId = generateDiceId()
+      //   const newDie: Die = {id: newId, style: DMG_STYLE, type: "D10"}
+      //   // const cddice = useDiceRollStore((state) => state.roll?.dice)
+      //   // if(cddice){
+      //   //   const ddice: (Die | Dice)[] = cddice.concat(newDie)
+      //   //   const droll: DiceRoll = {dice: ddice}
+      //     // useDiceRollStore((state) => state.roll = droll)
+      //     const addDie = useDiceRollStore((state) => state.addDie);
+      //     const reroll = useDiceRollStore((state) => state.reroll);
+      //     addDie(newDie)
+      //     // console.log("a")
+      //     reroll([newId])
+      //   // }
+      // }
+      // END BONUS DICE ROLL LOGIC
+    }
+    output += "\n"
+  }
+  if (!(currentValuesDmg.length === 0)){
+    output += "Damage: ";
+    if (flipped){
+      res = Math.min(...currentValuesDmg);
+    } else {
+      res = Math.max(...currentValuesDmg);
+    }
+    output += res;
+    if(res === 10){
+      output += "!";
+      var occ = countOccurrences(currentValuesDmg, 10);
+      if(occ > 0){
+        output += "\n+";
+        output += occ.toString();
+        if(occ === 1){
+          output += " Extra Wound!";
+        } else{
+          output += " Extra Wounds!";
+        }
+      }
+    }
+  }
 
   if (flipped){
     return Math.min(...currentValues);
