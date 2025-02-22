@@ -25,7 +25,9 @@ export function DiceResults({
   onExpand: (expand: boolean) => void;
 }) {
   const finalValue = useMemo(() => {
-    return getCombinedDiceValue(diceRoll, rollValues);
+    return getCombinedDiceValue(diceRoll, rollValues, diceRoll.flipped);
+    return 1
+    // return getCombinedDiceValue(diceRoll, rollValues);
     // return "asdf"+['one','two']+getCombinedDiceValue(diceRoll, rollValues);
   }, [diceRoll, rollValues]);
 
@@ -127,7 +129,8 @@ function DiceResultsExpanded({
             <Typography lineHeight="28px" color="white">
               {getCombinedDiceValue(
                 { dice: die, combination: diceRoll.combination },
-                rollValues
+                rollValues,
+                diceRoll.flipped
               )}
             </Typography>
           </>
