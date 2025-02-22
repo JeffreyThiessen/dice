@@ -62,9 +62,6 @@ export function getCombinedDiceValue(
     return d100Value;
   }
 
-  // let idToReroll: string = "";
-  // let lowestDamageValue: number = 100;
-
   let currentValues: number[] = [];
   let currentValuesToHit: number[] = [];
   let currentValuesDmg: number[] = [];
@@ -73,7 +70,6 @@ export function getCombinedDiceValue(
 
   for (const dieOrDice of dice.dice) {
     if (isDie(dieOrDice)) {
-      // console.log("dieId:" + dieOrDice.id.toString());
       const value = values[dieOrDice.id];
       if (value !== undefined) {
         if (value === 0 && dieOrDice.type === "D10") {
@@ -85,7 +81,6 @@ export function getCombinedDiceValue(
           } else {
             currentValues.push(10)
           }
-          // currentValues.push(10);
         } else {
           if (dieOrDice.style === TO_HIT_STYLE){
             currentValuesToHit.push(value)
@@ -96,15 +91,14 @@ export function getCombinedDiceValue(
           }
         }
       }
-    } else if (isDice(dieOrDice)) {
-      const value = getCombinedDiceValue(dieOrDice, values, flipped);
-      if (value !== null) {
-        // currentValues.push(value);
-      }
+    // } else if (isDice(dieOrDice)) {
+    //   const value = getCombinedDiceValue(dieOrDice, values, flipped);
+    //   if (value !== null) {
+    //     // currentValues.push(value);
+    //   }
     }
   }
 
-  // const flipped = useDiceControlsStore((state) => state.diceFlipped);
   let output: string = "";
   let res: number = -1
 
