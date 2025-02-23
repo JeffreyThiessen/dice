@@ -42,7 +42,7 @@ export function DiceResults({
           onClick={() => onExpand(!expanded)}
           color="inherit"
         > */}
-          <Typography variant="h6" color="white" sx={{whiteSpace: 'pre-wrap'}}>
+          <Typography variant="h6" color="white" sx={{whiteSpace: 'pre-wrap', fontSize: 18}}>
             {finalValue}
           </Typography>
         {/* </Button>

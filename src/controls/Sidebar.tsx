@@ -31,7 +31,6 @@ export function Sidebar() {
         <DicePicker />
         <Divider flexItem sx={{ mx: 1 }} />
         <DiceFlip />
-        <Divider flexItem sx={{ mx: 1 }} />
         <DiceAdd />
         <Divider flexItem sx={{ mx: 1 }} />
         <DiceHidden />

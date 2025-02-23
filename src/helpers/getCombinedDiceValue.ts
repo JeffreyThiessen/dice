@@ -102,8 +102,8 @@ export function getCombinedDiceValue(
   let res: number = -1
 
   if (!(currentValues.length === 0)){
-    // output += "Skill: ";
-    output += "S:";
+    output += "Skill: ";
+    // output += "S:";
     if (flipped){
       res = Math.min(...currentValues);
     } else {
@@ -116,8 +116,7 @@ export function getCombinedDiceValue(
     output += "\n";
   }
   if (!(currentValuesToHit.length === 0)){
-    // output += "Attack: ";
-    output += "A:";
+    output += "Atk: ";
     if (flipped){
       res = Math.min(...currentValuesToHit);
     } else {
@@ -125,15 +124,12 @@ export function getCombinedDiceValue(
     }
     output += res
     if(res === 10){
-      // output += "!"
-      output += "\n"
-      output += "[+1⚄]"
+      output += " [+1⚄]"
     }
     output += "\n"
   }
   if (!(currentValuesDmg.length === 0)){
-    output += "D:";
-    // output += "Damage: ";
+    output += "Dmg: ";
     if (flipped){
       res = Math.min(...currentValuesDmg);
     } else {
@@ -141,18 +137,11 @@ export function getCombinedDiceValue(
     }
     output += res;
     if(res === 10){
-      // output += "!";
       var occ = countOccurrences(currentValuesDmg, 10);
       if(occ > 0){
-        output += "\n+";
+        output += " [+";
         output += occ.toString();
-        if(occ === 1){
-          // output += " Extra Wound!";
-          output += "W";
-        } else{
-          // output += " Extra Wounds!";
-          output += "W";
-        }
+        output += "⚔]"
       }
     }
   }

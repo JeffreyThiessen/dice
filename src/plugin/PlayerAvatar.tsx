@@ -27,7 +27,7 @@ export function PlayerAvatar({
         showZero
         overlap="circular"
         anchorOrigin={{
-          vertical: "bottom",
+          vertical: "top",
           horizontal: "right",
         }}
         sx={{
@@ -35,8 +35,10 @@ export function PlayerAvatar({
             bgcolor: "background.paper",
           },
           pointerEvents: "none",
+          whiteSpace: 'pre',
         }}
         max={999}
+        nowrap
       >
         <IconButton
           sx={{ borderRadius: "20px", p: 0, pointerEvents: "all" }}
