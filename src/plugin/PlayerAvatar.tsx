@@ -38,7 +38,7 @@ export function PlayerAvatar({
           whiteSpace: 'pre',
         }}
         max={999}
-        nowrap
+        // nowrap
       >
         <IconButton
           sx={{ borderRadius: "20px", p: 0, pointerEvents: "all" }}
