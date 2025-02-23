@@ -64,7 +64,7 @@ export function usePlayerDice(player?: Player) {
 
   const finalValue = useMemo(() => {
     if (diceRoll && finishedRollValues) {
-      return getCombinedDiceValue(diceRoll, finishedRollValues);
+      return getCombinedDiceValue(diceRoll, finishedRollValues, diceRoll.flipped);
     } else {
       return null;
     }

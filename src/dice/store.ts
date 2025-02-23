@@ -3,6 +3,7 @@ import { immer } from "zustand/middleware/immer";
 import { WritableDraft } from "immer/dist/types/types-external";
 
 import { DiceRoll } from "../types/DiceRoll";
+import { Die } from "../types/Die";
 import { isDie } from "../types/Die";
 import { isDice } from "../types/Dice";
 import { getDieFromDice } from "../helpers/getDieFromDice";
@@ -23,6 +24,8 @@ interface DiceRollState {
    * A value of `null` means the die hasn't finished rolling yet.
    */
   rollTransforms: Record<string, DiceTransform | null>;
+
+  firstThrow: boolean;
   /**
    * A mapping from the die ID to its initial roll throw state.
    */
@@ -31,6 +34,8 @@ interface DiceRollState {
   clearRoll: (ids?: string) => void;
   /** Reroll select ids of dice or reroll all dice by passing `undefined` */
   reroll: (ids?: string[], manualThrows?: Record<string, DiceThrow>) => void;
+  addDie: (die: Die) => void;
+  setFirstRoll: (fr: boolean) => void;
   finishDieRoll: (id: string, number: number, transform: DiceTransform) => void;
 }
 
@@ -40,8 +45,10 @@ export const useDiceRollStore = create<DiceRollState>()(
     rollValues: {},
     rollTransforms: {},
     rollThrows: {},
+    firstThrow: true,
     startRoll: (roll, speedMultiplier?: number) =>
       set((state) => {
+        state.firstThrow = true;
         state.roll = roll;
         state.rollValues = {};
         state.rollTransforms = {};
@@ -60,9 +67,14 @@ export const useDiceRollStore = create<DiceRollState>()(
         state.rollValues = {};
         state.rollTransforms = {};
         state.rollThrows = {};
+        state.firstThrow = true;
       }),
     reroll: (ids, manualThrows) => {
+      // console.log("reroll ids :" + ids);
       set((state) => {
+        if(ids === undefined){
+          state.firstThrow = true;
+        }
         if (state.roll) {
           rerollDraft(
             state.roll,
@@ -73,6 +85,16 @@ export const useDiceRollStore = create<DiceRollState>()(
             state.rollThrows
           );
         }
+      });
+    },
+    addDie: (newDie) => {
+      set((state) => {
+        state.roll?.dice.push(newDie);
+      });
+    },
+    setFirstRoll: (fr) => {
+      set((state) => {
+        state.firstThrow = fr;
       });
     },
     finishDieRoll: (id, number, transform) => {
@@ -96,14 +118,22 @@ function rerollDraft(
   for (let dieOrDice of diceRoll.dice) {
     if (isDie(dieOrDice)) {
       if (!ids || ids.includes(dieOrDice.id)) {
+        // console.log("rerollin draft a:" + dieOrDice.id);
         delete rollValues[dieOrDice.id];
+        // console.log("rerollin draft b:" + dieOrDice.id);
         delete rollTransforms[dieOrDice.id];
+        // console.log("rerollin draft c:" + dieOrDice.id);
         delete rollThrows[dieOrDice.id];
+        // console.log("rerollin draft d:" + dieOrDice.id);
         const manualThrow = manualThrows?.[dieOrDice.id];
+        // console.log("rerollin draft e:" + dieOrDice.id);
         const id = generateDiceId();
         dieOrDice.id = id;
+        // console.log("rerollin draft f:" + dieOrDice.id);
         rollValues[id] = null;
+        // console.log("rerollin draft g:" + dieOrDice.id);
         rollTransforms[id] = null;
+        // console.log("rerollin draft h:" + dieOrDice.id);
         if (manualThrow) {
           rollThrows[id] = manualThrow;
         } else {

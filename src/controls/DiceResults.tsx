@@ -25,12 +25,15 @@ export function DiceResults({
   onExpand: (expand: boolean) => void;
 }) {
   const finalValue = useMemo(() => {
-    return getCombinedDiceValue(diceRoll, rollValues);
+    return getCombinedDiceValue(diceRoll, rollValues, diceRoll.flipped);
+    return 1
+    // return getCombinedDiceValue(diceRoll, rollValues);
+    // return "asdf"+['one','two']+getCombinedDiceValue(diceRoll, rollValues);
   }, [diceRoll, rollValues]);
 
   return (
     <Stack alignItems="center" maxHeight="calc(100vh - 100px)">
-      <Tooltip
+      {/* <Tooltip
         title={expanded ? "Hide Breakdown" : "Show Breakdown"}
         disableInteractive
       >
@@ -38,12 +41,12 @@ export function DiceResults({
           sx={{ pointerEvents: "all", padding: 0.5, minWidth: "40px" }}
           onClick={() => onExpand(!expanded)}
           color="inherit"
-        >
-          <Typography variant="h4" color="white">
+        > */}
+          <Typography variant="h6" color="white" sx={{whiteSpace: 'pre-wrap', fontSize: 18}}>
             {finalValue}
           </Typography>
-        </Button>
-      </Tooltip>
+        {/* </Button>
+      </Tooltip> */}
       <Grow
         in={expanded}
         mountOnEnter
@@ -124,10 +127,13 @@ function DiceResultsExpanded({
               =
             </Typography>
             <Typography lineHeight="28px" color="white">
-              {getCombinedDiceValue(
-                { dice: die, combination: diceRoll.combination },
-                rollValues
-              )}
+              {
+                getCombinedDiceValue(
+                  { dice: die, combination: diceRoll.combination },
+                  rollValues,
+                  diceRoll.flipped
+                )
+              }
             </Typography>
           </>
         )}

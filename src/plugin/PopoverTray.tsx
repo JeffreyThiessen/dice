@@ -84,6 +84,20 @@ export function PopoverTray({
                   : "rgba(255, 255, 255, 0.4)",
             }}
           >
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              textAlign="center"
+              // lineHeight="32px"
+              sx={{
+                bgcolor: "background.default",
+                whiteSpace: 'pre-wrap',
+              }}
+              // noWrap
+            >
+              {player?.name}
+              {finishedRolling && <span> | {finalValue}</span>}
+            </Typography>
             <Box component="div" height="250px" width="250px">
               <TraySuspense>
                 <Canvas frameloop="demand">
@@ -100,19 +114,7 @@ export function PopoverTray({
                 </Canvas>
               </TraySuspense>
             </Box>
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              textAlign="center"
-              lineHeight="32px"
-              sx={{
-                bgcolor: "background.default",
-              }}
-              noWrap
-            >
-              {player?.name}
-              {finishedRolling && <span> | {finalValue}</span>}
-            </Typography>
+
           </Paper>
         </ButtonBase>
       </Slide>

@@ -30,27 +30,28 @@ function createStandardSet(style: DiceStyle): DiceSet {
     id,
     name: `${style.toLowerCase()} dice`,
     dice: [
-      { id: `${id}_D4`, type: "D4", style },
-      { id: `${id}_D6`, type: "D6", style },
-      { id: `${id}_D8`, type: "D8", style },
+      // { id: `${id}_D4`, type: "D4", style },
+      // { id: `${id}_D6`, type: "D6", style },
+      // { id: `${id}_D8`, type: "D8", style },
       { id: `${id}_D10`, type: "D10", style },
-      { id: `${id}_D12`, type: "D12", style },
-      { id: `${id}_D20`, type: "D20", style },
-      { id: `${id}_D100`, type: "D100", style },
+      // { id: `${id}_D12`, type: "D12", style },
+      // { id: `${id}_D20`, type: "D20", style },
+      // { id: `${id}_D100`, type: "D100", style },
     ],
     previewImage: standardPreviews[style],
   };
 }
 
 const standardSets = [
-  createStandardSet("GALAXY"),
-  createStandardSet("GEMSTONE"),
-  createStandardSet("GLASS"),
   createStandardSet("IRON"),
-  createStandardSet("NEBULA"),
-  createStandardSet("SUNRISE"),
+  // createStandardSet("GALAXY"),
+  // createStandardSet("GEMSTONE"),
+  createStandardSet("GLASS"),
+  // createStandardSet("IRON"),
+  // createStandardSet("NEBULA"),
+  // createStandardSet("SUNRISE"),
   createStandardSet("SUNSET"),
-  createStandardSet("WALNUT"),
+  // createStandardSet("WALNUT"),
 ];
 
 const allSet: DiceSet = {
@@ -63,4 +64,4 @@ const allSet: DiceSet = {
   previewImage: allPreview,
 };
 
-export const diceSets: DiceSet[] = [...standardSets, allSet];
+export const diceSets: DiceSet[] = [allSet];

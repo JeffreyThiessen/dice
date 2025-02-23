@@ -1,5 +1,14 @@
 import { Dice, isDice } from "../types/Dice";
+import { Die } from "../types/Die";
 import { isDie } from "../types/Die";
+
+import { useDiceControlsStore } from "../controls/store";
+import { useDiceRollStore } from "../dice/store";
+import { generateDiceId } from "./generateDiceId";
+import { DiceRoll } from "../types/DiceRoll";
+
+const TO_HIT_STYLE = "GLASS"
+const DMG_STYLE = "SUNSET"
 
 /**
  * Check if the dice is a classical D100 roll with a D100
@@ -9,7 +18,8 @@ import { isDie } from "../types/Die";
 function checkD100Combination(
   dice: Dice,
   values: Record<string, number>
-): number | null {
+// ): number | null {
+): number | string | null {
   const bonus = dice.bonus || 0;
   if (
     dice.dice.length === 2 &&
@@ -32,6 +42,9 @@ function checkD100Combination(
   return null;
 }
 
+const countOccurrences = (arr: any[], val: any) =>
+  arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+
 /**
  * Recursively get the final result for a roll of dice
  * @param dice
@@ -40,45 +53,98 @@ function checkD100Combination(
  */
 export function getCombinedDiceValue(
   dice: Dice,
-  values: Record<string, number>
-): number | null {
+  values: Record<string, number>,
+  flipped: boolean | undefined,
+// ): number | null {
+): number | string | null {
   const d100Value = checkD100Combination(dice, values);
   if (d100Value !== null) {
     return d100Value;
   }
 
   let currentValues: number[] = [];
+  let currentValuesToHit: number[] = [];
+  let currentValuesDmg: number[] = [];
+
+  console.log()
+
   for (const dieOrDice of dice.dice) {
     if (isDie(dieOrDice)) {
       const value = values[dieOrDice.id];
       if (value !== undefined) {
         if (value === 0 && dieOrDice.type === "D10") {
-          currentValues.push(10);
+          if (dieOrDice.style === TO_HIT_STYLE){
+            currentValuesToHit.push(10)
+          } else if (dieOrDice.style === DMG_STYLE){
+            currentValuesDmg.push(10)
+          } else {
+            currentValues.push(10)
+          }
         } else {
-          currentValues.push(value);
+          if (dieOrDice.style === TO_HIT_STYLE){
+            currentValuesToHit.push(value)
+          } else if (dieOrDice.style === DMG_STYLE){
+            currentValuesDmg.push(value)
+          } else {
+            currentValues.push(value)
+          }
         }
       }
-    } else if (isDice(dieOrDice)) {
-      const value = getCombinedDiceValue(dieOrDice, values);
-      if (value !== null) {
-        currentValues.push(value);
+    // } else if (isDice(dieOrDice)) {
+    //   const value = getCombinedDiceValue(dieOrDice, values, flipped);
+    //   if (value !== null) {
+    //     // currentValues.push(value);
+    //   }
+    }
+  }
+
+  let output: string = "";
+  let res: number = -1
+
+  if (!(currentValues.length === 0)){
+    output += "Skill: ";
+    // output += "S:";
+    if (flipped){
+      res = Math.min(...currentValues);
+    } else {
+      res = Math.max(...currentValues);
+    }
+    output += res
+    if(res === 10 || res == 1){
+      // output += "!"
+    }
+    output += "\n";
+  }
+  if (!(currentValuesToHit.length === 0)){
+    output += "Atk: ";
+    if (flipped){
+      res = Math.min(...currentValuesToHit);
+    } else {
+      res = Math.max(...currentValuesToHit);
+    }
+    output += res
+    if(res === 10){
+      output += " [+1⚄]"
+    }
+    output += "\n"
+  }
+  if (!(currentValuesDmg.length === 0)){
+    output += "Dmg: ";
+    if (flipped){
+      res = Math.min(...currentValuesDmg);
+    } else {
+      res = Math.max(...currentValuesDmg);
+    }
+    output += res;
+    if(res === 10){
+      var occ = countOccurrences(currentValuesDmg, 10);
+      if(occ > 0){
+        output += " [+";
+        output += occ.toString();
+        output += "⚔]"
       }
     }
   }
 
-  const bonus = dice.bonus || 0;
-
-  if (currentValues.length === 0 || dice.combination === "NONE") {
-    if (dice.bonus === undefined) {
-      return null;
-    } else {
-      return dice.bonus;
-    }
-  } else if (dice.combination === "HIGHEST") {
-    return Math.max(...currentValues) + bonus;
-  } else if (dice.combination === "LOWEST") {
-    return Math.min(...currentValues) + bonus;
-  } else {
-    return currentValues.reduce((a, b) => a + b) + bonus;
-  }
+  return output;
 }
