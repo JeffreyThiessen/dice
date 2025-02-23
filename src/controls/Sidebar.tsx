@@ -7,9 +7,8 @@ import { DicePicker } from "./DicePicker";
 import { DiceExtras } from "./DiceExtras";
 import { DiceHidden } from "./DiceHidden";
 import { DiceFlip } from "./DiceFlip";
+import { DiceAdd } from "./DiceAdd";
 import { DiceHistory } from "./DiceHistory";
-
-import { FairnessTesterButton } from "../tests/FairnessTesterButton";
 
 import { PluginGate } from "../plugin/PluginGate";
 import { DiceRollSync } from "../plugin/DiceRollSync";
@@ -33,10 +32,11 @@ export function Sidebar() {
         <Divider flexItem sx={{ mx: 1 }} />
         <DiceFlip />
         <Divider flexItem sx={{ mx: 1 }} />
+        <DiceAdd />
+        <Divider flexItem sx={{ mx: 1 }} />
         <DiceHidden />
         {/* <DiceExtras /> */}
         <DiceHistory />
-        {/* <FairnessTesterButton /> */}
         <PluginGate>
           <Divider flexItem sx={{ mx: 1 }} />
           <DiceRollSync />

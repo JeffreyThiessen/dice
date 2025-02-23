@@ -19,7 +19,6 @@ interface DiceControlsState {
   diceHidden: boolean;
   diceFlipped: boolean;
   diceRollPressTime: number | null;
-  fairnessTesterOpen: boolean;
   changeDiceSet: (diceSet: DiceSet) => void;
   resetDiceCounts: () => void;
   changeDieCount: (id: string, count: number) => void;
@@ -30,7 +29,6 @@ interface DiceControlsState {
   toggleDiceHidden: () => void;
   toggleDiceFlipped: () => void;
   setDiceRollPressTime: (time: number | null) => void;
-  toggleFairnessTester: () => void;
 }
 
 const initialSet = diceSets[0];
@@ -48,7 +46,6 @@ export const useDiceControlsStore = create<DiceControlsState>()(
     diceHidden: false,
     diceFlipped: false,
     diceRollPressTime: null,
-    fairnessTesterOpen: false,
     changeDiceSet(diceSet) {
       set((state) => {
         const counts: DiceCounts = {};
@@ -119,11 +116,6 @@ export const useDiceControlsStore = create<DiceControlsState>()(
     setDiceRollPressTime(time) {
       set((state) => {
         state.diceRollPressTime = time;
-      });
-    },
-    toggleFairnessTester() {
-      set((state) => {
-        state.fairnessTesterOpen = !state.fairnessTesterOpen;
       });
     },
   }))

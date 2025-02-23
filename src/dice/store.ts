@@ -35,6 +35,7 @@ interface DiceRollState {
   /** Reroll select ids of dice or reroll all dice by passing `undefined` */
   reroll: (ids?: string[], manualThrows?: Record<string, DiceThrow>) => void;
   addDie: (die: Die) => void;
+  setFirstRoll: (fr: boolean) => void;
   finishDieRoll: (id: string, number: number, transform: DiceTransform) => void;
 }
 
@@ -89,6 +90,11 @@ export const useDiceRollStore = create<DiceRollState>()(
     addDie: (newDie) => {
       set((state) => {
         state.roll?.dice.push(newDie);
+      });
+    },
+    setFirstRoll: (fr) => {
+      set((state) => {
+        state.firstThrow = fr;
       });
     },
     finishDieRoll: (id, number, transform) => {
